@@ -1,1 +1,239 @@
-!function(e){var o,n=e(window),t=e("body");e("#wrapper");(breakpoints({xlarge:["1281px","1680px"],large:["981px","1280px"],medium:["737px","980px"],small:["481px","736px"],xsmall:[null,"480px"]}),"ie"==browser.name&&t.addClass("ie"),browser.mobile&&t.addClass("touch"),browser.canUse("transition"))&&(n.on("load",(function(){window.setTimeout((function(){t.removeClass("is-preload")}),100)})),n.on("resize",(function(){window.clearTimeout(o),t.addClass("is-resizing"),o=window.setTimeout((function(){t.removeClass("is-resizing")}),100)})));n.scrollTop(0);var i=e(".panel");i.each((function(){var o=e(this),n=e('[href="#'+o.attr("id")+'"]');e('<div class="closer" />').appendTo(o).on("click",(function(e){o.trigger("---hide")})),o.on("click",(function(e){e.stopPropagation()})).on("---toggle",(function(){o.hasClass("active")?o.triggerHandler("---hide"):o.triggerHandler("---show")})).on("---show",(function(){t.hasClass("content-active")&&i.trigger("---hide"),o.addClass("active"),n.addClass("active"),t.addClass("content-active")})).on("---hide",(function(){o.removeClass("active"),n.removeClass("active"),t.removeClass("content-active")})),n.removeAttr("href").css("cursor","pointer").on("click",(function(e){e.preventDefault(),e.stopPropagation(),o.trigger("---toggle")}))})),t.on("click",(function(e){t.hasClass("content-active")&&(e.preventDefault(),e.stopPropagation(),i.trigger("---hide"))})),n.on("keyup",(function(e){27==e.keyCode&&t.hasClass("content-active")&&(e.preventDefault(),e.stopPropagation(),i.trigger("---hide"))})),e("#header").find("a").each((function(){var o=e(this),n=o.attr("href");n&&"#"!=n.charAt(0)&&o.removeAttr("href").css("cursor","pointer").on("click",(function(e){e.preventDefault(),e.stopPropagation(),window.location.href=n}))})),e("#footer").find(".copyright").each((function(){var o=e(this),n=o.parent(),t=n.parent().children().last();breakpoints.on("<=medium",(function(){o.appendTo(t)})),breakpoints.on(">medium",(function(){o.appendTo(n)}))}));var a=e("#main");a.children(".thumb").each((function(){var o,n=e(this).find(".image"),t=n.children("img");0!=n.length&&(n.css("background-image","url("+t.attr("src")+")"),(o=t.data("position"))&&n.css("background-position",o),t.hide())})),a.poptrox({baseZIndex:2e4,caption:function(e){var o="";return e.nextAll().each((function(){o+=this.outerHTML})),o},fadeSpeed:300,onPopupClose:function(){t.removeClass("modal-active")},onPopupOpen:function(){t.addClass("modal-active")},overlayOpacity:0,popupCloserText:"",popupHeight:150,popupLoaderText:"",popupSpeed:300,popupWidth:150,selector:".thumb > a.image",usePopupCaption:!0,usePopupCloser:!0,usePopupDefaultStyling:!1,usePopupForceClose:!0,usePopupLoader:!0,usePopupNav:!0,windowMargin:50}),breakpoints.on("<=xsmall",(function(){a[0]._poptrox.windowMargin=0})),breakpoints.on(">xsmall",(function(){a[0]._poptrox.windowMargin=50}))}(jQuery);
+/*
+	Multiverse by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+(function ($) {
+  var $window = $(window),
+    $body = $("body"),
+    $wrapper = $("#wrapper");
+
+  // Breakpoints.
+  breakpoints({
+    xlarge: ["1281px", "1680px"],
+    large: ["981px", "1280px"],
+    medium: ["737px", "980px"],
+    small: ["481px", "736px"],
+    xsmall: [null, "480px"],
+  });
+
+  // Hack: Enable IE workarounds.
+  if (browser.name == "ie") $body.addClass("ie");
+
+  // Touch?
+  if (browser.mobile) $body.addClass("touch");
+
+  // Transitions supported?
+  if (browser.canUse("transition")) {
+    // Play initial animations on page load.
+    $window.on("load", function () {
+      window.setTimeout(function () {
+        $body.removeClass("is-preload");
+      }, 100);
+    });
+
+    // Prevent transitions/animations on resize.
+    var resizeTimeout;
+
+    $window.on("resize", function () {
+      window.clearTimeout(resizeTimeout);
+
+      $body.addClass("is-resizing");
+
+      resizeTimeout = window.setTimeout(function () {
+        $body.removeClass("is-resizing");
+      }, 100);
+    });
+  }
+
+  // Scroll back to top.
+  $window.scrollTop(0);
+
+  // Panels.
+  var $panels = $(".panel");
+
+  $panels.each(function () {
+    var $this = $(this),
+      $toggles = $('[href="#' + $this.attr("id") + '"]'),
+      $closer = $('<div class="closer" />').appendTo($this);
+
+    // Closer.
+    $closer.on("click", function (event) {
+      $this.trigger("---hide");
+    });
+
+    // Events.
+    $this
+      .on("click", function (event) {
+        event.stopPropagation();
+      })
+      .on("---toggle", function () {
+        if ($this.hasClass("active")) $this.triggerHandler("---hide");
+        else $this.triggerHandler("---show");
+      })
+      .on("---show", function () {
+        // Hide other content.
+        if ($body.hasClass("content-active")) $panels.trigger("---hide");
+
+        // Activate content, toggles.
+        $this.addClass("active");
+        $toggles.addClass("active");
+
+        // Activate body.
+        $body.addClass("content-active");
+      })
+      .on("---hide", function () {
+        // Deactivate content, toggles.
+        $this.removeClass("active");
+        $toggles.removeClass("active");
+
+        // Deactivate body.
+        $body.removeClass("content-active");
+      });
+
+    // Toggles.
+    $toggles
+      .removeAttr("href")
+      .css("cursor", "pointer")
+      .on("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        $this.trigger("---toggle");
+      });
+  });
+
+  // Global events.
+  $body.on("click", function (event) {
+    if ($body.hasClass("content-active")) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      $panels.trigger("---hide");
+    }
+  });
+
+  $window.on("keyup", function (event) {
+    if (event.keyCode == 27 && $body.hasClass("content-active")) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      $panels.trigger("---hide");
+    }
+  });
+
+  // Header.
+  var $header = $("#header");
+
+  // Links.
+  $header.find("a").each(function () {
+    var $this = $(this),
+      href = $this.attr("href");
+
+    // Internal link? Skip.
+    if (!href || href.charAt(0) == "#") return;
+
+    // Redirect on click.
+    $this
+      .removeAttr("href")
+      .css("cursor", "pointer")
+      .on("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        window.location.href = href;
+      });
+  });
+
+  // Footer.
+  var $footer = $("#footer");
+
+  // Copyright.
+  // This basically just moves the copyright line to the end of the *last* sibling of its current parent
+  // when the "medium" breakpoint activates, and moves it back when it deactivates.
+  $footer.find(".copyright").each(function () {
+    var $this = $(this),
+      $parent = $this.parent(),
+      $lastParent = $parent.parent().children().last();
+
+    breakpoints.on("<=medium", function () {
+      $this.appendTo($lastParent);
+    });
+
+    breakpoints.on(">medium", function () {
+      $this.appendTo($parent);
+    });
+  });
+
+  // Main.
+  var $main = $("#main");
+
+  // Thumbs.
+  $main.children(".thumb").each(function () {
+    var $this = $(this),
+      $image = $this.find(".image"),
+      $image_img = $image.children("img"),
+      x;
+
+    // No image? Bail.
+    if ($image.length == 0) return;
+
+    // Image.
+    // This sets the background of the "image" <span> to the image pointed to by its child
+    // <img> (which is then hidden). Gives us way more flexibility.
+
+    // Set background.
+    $image.css("background-image", "url(" + $image_img.attr("src") + ")");
+
+    // Set background position.
+    if ((x = $image_img.data("position"))) $image.css("background-position", x);
+
+    // Hide original img.
+    $image_img.hide();
+  });
+
+  // Poptrox.
+  $main.poptrox({
+    baseZIndex: 20000,
+    caption: function ($a) {
+      var s = "";
+
+      $a.nextAll().each(function () {
+        s += this.outerHTML;
+      });
+
+      return s;
+    },
+    fadeSpeed: 300,
+    onPopupClose: function () {
+      $body.removeClass("modal-active");
+    },
+    onPopupOpen: function () {
+      $body.addClass("modal-active");
+    },
+    overlayOpacity: 0,
+    popupCloserText: "",
+    popupHeight: 150,
+    popupLoaderText: "",
+    popupSpeed: 300,
+    popupWidth: 150,
+    selector: ".thumb > a.image",
+    usePopupCaption: true,
+    usePopupCloser: true,
+    usePopupDefaultStyling: false,
+    usePopupForceClose: true,
+    usePopupLoader: true,
+    usePopupNav: true,
+    windowMargin: 50,
+  });
+
+  // Hack: Set margins to 0 when 'xsmall' activates.
+  breakpoints.on("<=xsmall", function () {
+    $main[0]._poptrox.windowMargin = 0;
+  });
+
+  breakpoints.on(">xsmall", function () {
+    $main[0]._poptrox.windowMargin = 50;
+  });
+})(jQuery);
