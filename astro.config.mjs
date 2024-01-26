@@ -5,4 +5,6 @@ import compress from "astro-compress";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), compress(),]
+  site: 'https://excelcarpet.github.io',
+  //base: '/my-repo',
 });
