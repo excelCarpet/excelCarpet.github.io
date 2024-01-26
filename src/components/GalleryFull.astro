@@ -1,7 +1,8 @@
 ---
 
 import { Image } from 'astro:assets'
-import { glob } from 'glob'
+import pkg from 'glob';
+const { glob } = pkg;
 // import '@/styles/main.css'
 
 async function ImageFetcher(pattern: string) {
